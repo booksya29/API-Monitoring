@@ -5,3 +5,5 @@ class adding_api_state(StatesGroup):
     send_method = State()
     body = State()
     max_delay_seconds = State()
+    confirming = State()
+    

@@ -17,6 +17,7 @@ dp = Dispatcher()
 dp.include_router(user_router.router)
 dp["db"] = DataBase()
 
+
 @dp.message(CommandStart())
 async def start_message(message:Message, db:DataBase):
     if not db.usersdb_controller.check_user(message.from_user.id):
@@ -26,8 +27,9 @@ async def start_message(message:Message, db:DataBase):
 
 
 async def main():
-    dp['db'].connect()
+    dp["conn"] = dp['db'].connect()
     await dp.start_polling(bot)
+    dp["conn"].close()
     dp["db"].close()
 
 if __name__ == "__main__":

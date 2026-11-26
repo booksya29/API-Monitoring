@@ -8,3 +8,4 @@ class ApiScheme(BaseModel):
     send_method:str
     body:str
     created_at:None = None
+    max_delay:int = 360
