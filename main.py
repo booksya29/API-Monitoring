@@ -3,7 +3,7 @@ from os import getenv
 from schemes import User
 from dotenv import load_dotenv
 from pathlib import Path
-from telegram_bot import user_router
+from telegram_bot import new_api, user_api
 from aiogram.types import Message
 from aiogram.filters import Command, CommandStart
 from telegram_bot import main_keyboard
@@ -14,7 +14,8 @@ load_dotenv(env_path)
 
 bot = Bot(token=getenv("BOT_TOKEN"))
 dp = Dispatcher()
-dp.include_router(user_router.router)
+dp.include_router(user_api.router)
+dp.include_router(new_api.router)
 dp["db"] = DataBase()
 
 

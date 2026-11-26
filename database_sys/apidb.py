@@ -18,7 +18,7 @@ class ApiDB:
 
     def get_users_api(self, user_id:int):
         cursor = self.conn.cursor(cursor_factory = RealDictCursor)
-        cursor.execute("SELECT * FROM api WHERE id = user_id")
+        cursor.execute("SELECT * FROM api WHERE creator_id = %s", (user_id,))
         data = cursor.fetchall()
         cursor.close()
         return data

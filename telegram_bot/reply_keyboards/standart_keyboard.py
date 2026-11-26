@@ -3,7 +3,7 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 
 main_keyboard = ReplyKeyboardMarkup(
-    keyboard=[[KeyboardButton(text="Додати API")]]
+    keyboard=[[KeyboardButton(text="Додати API"), KeyboardButton(text="Перевірити наявні API")]]
 )
 
 method_keyboard = ReplyKeyboardMarkup(
