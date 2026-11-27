@@ -13,7 +13,7 @@ class HistoryDB:
 
     def get_history_by_user(self, user_id:int):
         cursor = self.conn.cursor()
-        cursor.execute("SELECT h.api_id, h.status_code, h.check_time FROM history AS h WHERE h.user_id = %s", (user_id,))
+        cursor.execute("SELECT h.api_id, h.url, h.body, h.status_code, h.check_time FROM history AS h WHERE h.user_id = %s", (user_id,))
         rows = cursor.fetchall()
         df = DataFrame(rows, columns=["api_id", "status_code", "check_time"])
         return df
