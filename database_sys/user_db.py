@@ -21,3 +21,7 @@ class UserDB:
         cursor.execute(query, tuple(data_dict.values()))
         self.conn.commit()
         cursor.close()
+    def test(self):
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT register_date FROM users")
+        print(int(cursor.fetchone()[0].timestamp()))

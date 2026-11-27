@@ -31,4 +31,10 @@ class ApiDB:
         cursor.execute(query, tuple(new_data.values(), id))
         self.conn.comit()
         cursor.close()
-        
+
+
+    def check_nearest_apis(self) -> dict:
+        cursor = self.conn.cursor(cursor_factory = RealDictCursor)
+        cursor.execute("SELECT * FROM api WHERE (last_check_seconds + MAKE_INTERVAL(secs=>max_delay_seconds)) <= NOW() ORDER BY (last_check_seconds + MAKE_INTERVAL(secs=>max_delay_seconds)) ASC")
+        data = cursor.fetchall()
+        return data
