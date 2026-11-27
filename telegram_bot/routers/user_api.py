@@ -1,5 +1,6 @@
 import math
 from aiogram.exceptions import TelegramBadRequest
+from pandas import DataFrame
 from telegram_bot import build
 from aiogram.types import Message, CallbackQuery
 from aiogram.fsm.context import FSMContext
@@ -7,6 +8,9 @@ from aiogram import Router, F
 from database_sys import DataBase
 from telegram_bot import ShowApiList
 from telegram_bot import list_apis_keyboard
+from io import BytesIO
+from aiogram.types import BufferedInputFile
+
 router = Router()
 
 @router.message(F.text == "Перевірити наявні API")
@@ -52,3 +56,12 @@ async def next_p_write(callback:CallbackQuery, state:FSMContext):
     except TelegramBadRequest as e:
         if "message is not modified" not in str(e):
           raise
+
+
+@router.message(F.text == "Історія перевірок")
+async def show_history(message:Message, db:DataBase):
+    df:DataFrame = db.historydb_controller.get_history_by_user(message.from_user.id)
+    buffer = BytesIO()
+    df.to_csv(buffer, index=False, encoding="utf-8-sig")
+    file = BufferedInputFile(buffer.getvalue(), f"{message.from_user.full_name}_history.csv")
+    await message.answer_document(file, caption="Ось історія ваших API в csv форматі!")

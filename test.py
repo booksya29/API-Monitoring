@@ -4,6 +4,7 @@ from schemes import ApiScheme
 if __name__ == "__main__":
     db = DataBase()
     db.connect()
+    db.create_tables()
     data = db.apidb_controller.check_nearest_apis()
     print(data)
     creator_id=1,

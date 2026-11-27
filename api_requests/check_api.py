@@ -1,5 +1,6 @@
 import aiohttp
-from schemes import ApiResponse_scheme
+
+from schemes.historydb_schemes import HistoryScheme
 async def check_api(data:dict, bot):
     user_id = data["creator_id"]
     method = data["send_method"]
@@ -11,7 +12,8 @@ async def check_api(data:dict, bot):
             answer = await response.text()
     if status_code < 200 or status_code >= 300:
         await bot.send_message(chat_id=user_id, text=f"API {url} повернуло код {status_code}.")
-    api_response = ApiResponse_scheme(request_id=data["id"], status_code=status_code, answer=answer)
+    api_response = HistoryScheme(api_id=data["id"], status_code=status_code, body=answer, user_id=user_id)
+
     return api_response
 
 async def build_check_list(data:list[dict], bot):
