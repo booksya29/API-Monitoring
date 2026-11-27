@@ -25,3 +25,15 @@ class UserDB:
         cursor = self.conn.cursor()
         cursor.execute("SELECT register_date FROM users")
         print(int(cursor.fetchone()[0].timestamp()))
+
+    def change_notification_state(self, user_id, notification_b):
+        cursor = self.conn.cursor()
+        cursor.execute("UPDATE users SET notification_b = %s WHERE id = %s", (notification_b, user_id))
+        self.conn.commit()
+        cursor.close()
+
+    def get_notification_state(self, user_id):
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT notification_b FROM users WHERE id = %s", (user_id,))
+        return cursor.fetchone()[0]
+    

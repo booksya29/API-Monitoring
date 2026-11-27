@@ -35,7 +35,7 @@ class DataBase:
             return False
         cursor = self.conn.cursor()
         cursor.execute("CREATE TABLE IF NOT EXISTS api(id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY, creator_id BIGINT, status BOOLEAN, url TEXT, send_method TEXT CHECK(send_method IN ('GET', 'POST', 'PUT', 'DELETE', 'PATCH')), body TEXT, created_at TIMESTAMPTZ DEFAULT NOW(), last_check_seconds TIMESTAMPTZ, max_delay_seconds BIGINT)")
-        cursor.execute("CREATE TABLE IF NOT EXISTS users(id BIGINT PRIMARY KEY, name TEXT, api_count INTEGER, register_date TIMESTAMPTZ DEFAULT NOW())")
+        cursor.execute("CREATE TABLE IF NOT EXISTS users(id BIGINT PRIMARY KEY, name TEXT, api_count INTEGER, register_date TIMESTAMPTZ DEFAULT NOW(), notification_b BOOLEAN)")
         cursor.execute("CREATE TABLE IF NOT EXISTS history(id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY , api_id INTEGER NOT NULL, status_code INTEGER NOT NULL, body TEXT NOT NULL, check_time TIMESTAMPTZ DEFAULT NOW(), user_id BIGINT)")
         self.conn.commit()
     def disconect(self):

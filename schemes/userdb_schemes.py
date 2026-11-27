@@ -6,3 +6,4 @@ class User(BaseModel):
     name:str | None
     api_count:int | None
     register_date:None = None
+    notification_b:bool = True

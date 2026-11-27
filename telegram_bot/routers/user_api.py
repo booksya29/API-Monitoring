@@ -65,3 +65,15 @@ async def show_history(message:Message, db:DataBase):
     df.to_csv(buffer, index=False, encoding="utf-8-sig")
     file = BufferedInputFile(buffer.getvalue(), f"{message.from_user.full_name}_history.csv")
     await message.answer_document(file, caption="Ось історія ваших API в csv форматі!")
+
+
+@router.message(F.text == "Увімкнути сповіщення")
+async def turn_on_notifications(message:Message, db:DataBase):
+    db.usersdb_controller.change_notification_state(message.from_user.id, True)
+    await message.answer("Повідомлення включені!")
+
+
+@router.message(F.text == "Вимкнути сповіщення")
+async def turn_on_notifications(message:Message, db:DataBase):
+    db.usersdb_controller.change_notification_state(message.from_user.id, False)
+    await message.answer("Повідомлення виключені!")

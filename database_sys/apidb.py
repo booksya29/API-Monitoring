@@ -11,7 +11,7 @@ class ApiDB:
         if exists:
             cursor.close()
             return False
-        cursor.execute("INSERT INTO api(creator_id, status, url, send_method, body) VALUES(%s,%s,%s,%s,%s)", (data.creator_id, data.status, data.url, data.send_method, data.body))
+        cursor.execute("INSERT INTO api(creator_id, status, url, send_method, body, max_delay_seconds) VALUES(%s,%s,%s,%s,%s)", (data.creator_id, data.status, data.url, data.send_method, data.body, data.max_delay))
         self.conn.commit()
         cursor.close()
         return data.model_dump()
@@ -29,7 +29,7 @@ class ApiDB:
         sets = ", ".join(f"{key} = %s" for key in new_data.keys())
         query = f"UPDATE api SET {sets} WHERE id = %s"
         cursor.execute(query, tuple(new_data.values(), id))
-        self.conn.comit()
+        self.conn.commit()
         cursor.close()
 
 
