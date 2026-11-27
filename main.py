@@ -9,6 +9,8 @@ from aiogram.filters import Command, CommandStart
 from telegram_bot import main_keyboard
 import asyncio
 from database_sys import DataBase
+from shedule_task import check_apis_task, sheduler
+
 env_path = Path(__file__).parent.absolute() / ".env"
 load_dotenv(env_path)
 
@@ -26,10 +28,12 @@ async def start_message(message:Message, db:DataBase):
         db.usersdb_controller.add_new_user(data)
     await message.answer("Вітаю! З чого почнемо?", reply_markup=main_keyboard)
 
-
 async def main():
+    sheduler.add_job(check_apis_task, trigger="interval", seconds=10, args = [dp["db"]], max_instances=1, coalesce=True)
     dp["conn"] = dp['db'].connect()
+    sheduler.start()
     await dp.start_polling(bot)
+    sheduler.shutdown()
     dp["conn"].close()
     dp["db"].close()
 
