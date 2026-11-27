@@ -29,13 +29,12 @@ async def start_message(message:Message, db:DataBase):
     await message.answer("Вітаю! З чого почнемо?", reply_markup=main_keyboard)
 
 async def main():
-    sheduler.add_job(check_apis_task, trigger="interval", seconds=10, args = [dp["db"]], max_instances=1, coalesce=True)
+    sheduler.add_job(check_apis_task, trigger="interval", seconds=10, args = [dp["db"], bot], max_instances=1, coalesce=True)
     dp["conn"] = dp['db'].connect()
     sheduler.start()
     await dp.start_polling(bot)
     sheduler.shutdown()
     dp["conn"].close()
     dp["db"].close()
-
 if __name__ == "__main__":
     asyncio.run(main())
